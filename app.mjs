@@ -3,7 +3,7 @@ import cors from "cors";
 import connectionPool from "./utils/db.mjs";
 
 const app = express();
-const port = 4002;
+const port = 8080;
 
 app.use(express.json());
 app.use(cors());
