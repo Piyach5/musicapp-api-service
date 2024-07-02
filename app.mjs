@@ -63,37 +63,24 @@ app.get("/library", async (req, res) => {
 app.post("/addtolibrary", async (req, res) => {
   const newArtist = { ...req.body };
   try {
-    await connectionPool.query(
+    const result = await connectionPool.query(
       `
         INSERT INTO artists (name, image)
-        values ($1, $2)`,
+        values ($1, $2)
+        RETURNING artist_id
+        `,
       [newArtist.name, newArtist.image]
     );
-    const findNewArtistId = await connectionPool.query(
-      `
-        SELECT artist_id FROM artists
-        ORDER BY artist_id DESC
-        LIMIT 1;`
-    );
-    return res.status(201).json(findNewArtistId.rows);
-  } catch (error) {
-    return res.status(500).json(error.message);
-  }
-});
 
-app.post("/library/albums/:artist_id", async (req, res) => {
-  const artistId = req.params.artist_id;
-  const newAlbum = { ...req.body };
-  try {
+    const newArtistId = result.rows[0].artist_id;
+
     await connectionPool.query(
-      `
+      ` 
         INSERT INTO albums (artist_id, title, album_cover, url)
         values ($1, $2, $3, $4)`,
-      [artistId, newAlbum.title, newAlbum.album_cover, newAlbum.url]
+      [newArtistId, newArtist.title, newArtist.album_cover, newArtist.url]
     );
-    return res
-      .status(201)
-      .json({ message: "Album has been added sucessfully" });
+    return res.status(201).json({ message: "Add to library successfully" });
   } catch (error) {
     return res.status(500).json(error.message);
   }
