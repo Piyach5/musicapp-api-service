@@ -86,6 +86,20 @@ app.post("/addtolibrary", async (req, res) => {
   }
 });
 
+app.put("/library/:artistId", async (req, res) => {
+  const newAlbum = { ...req.body };
+  const artistId = req.params.artistId;
+  try {
+    await connectionPool.query(
+      `UPDATE albums SET url = $1 WHERE artist_id = $2`,
+      [newAlbum.url, artistId]
+    );
+    return res.status(200).json({ message: "Album Updated Successfully" });
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+});
+
 app.delete("/library/:artistId", async (req, res) => {
   const artistId = req.params.artistId;
   try {
