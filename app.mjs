@@ -60,7 +60,7 @@ app.get("/library", async (req, res) => {
   }
 });
 
-app.post("/library/artists", async (req, res) => {
+app.post("/addtolibrary", async (req, res) => {
   const newArtist = { ...req.body };
   try {
     await connectionPool.query(
