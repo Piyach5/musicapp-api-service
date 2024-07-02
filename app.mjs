@@ -87,12 +87,16 @@ app.post("/addtolibrary", async (req, res) => {
 });
 
 app.put("/library/:artistId", async (req, res) => {
-  const newAlbum = { ...req.body };
   const artistId = req.params.artistId;
+  const newAlbum = { ...req.body };
   try {
     await connectionPool.query(
-      `UPDATE albums SET url = $1 WHERE artist_id = $2`,
-      [newAlbum.url, artistId]
+      `UPDATE albums
+       SET title = $1
+       SET url = $2
+       SET album_cover = $3
+       WHERE artist_id = $4`,
+      [newAlbum.title, newAlbum.album_cover, newAlbum.url, artistId]
     );
     return res.status(200).json({ message: "Album Updated Successfully" });
   } catch (error) {
