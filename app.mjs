@@ -86,6 +86,17 @@ app.post("/addtolibrary", async (req, res) => {
   }
 });
 
+app.delete("library/:artistId", async (req, res) => {
+  const artistId = req.params.artistId;
+  try {
+    await connectionPool.query(`DELETE FROM artists WHERE artist_id = $1`, [
+      artistId,
+    ]);
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}.`);
 });
