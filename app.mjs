@@ -92,6 +92,7 @@ app.delete("library/:artistId", async (req, res) => {
     await connectionPool.query(`DELETE FROM artists WHERE artist_id = $1`, [
       artistId,
     ]);
+    return res.status(200).json({ message: "Artist Deleted Successfully" });
   } catch (error) {
     return res.status(500).json(error.message);
   }
