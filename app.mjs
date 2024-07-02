@@ -86,7 +86,7 @@ app.post("/addtolibrary", async (req, res) => {
   }
 });
 
-app.delete("library/:artistId", async (req, res) => {
+app.delete("/library/:artistId", async (req, res) => {
   const artistId = req.params.artistId;
   try {
     await connectionPool.query(`DELETE FROM artists WHERE artist_id = $1`, [
