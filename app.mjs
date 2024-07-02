@@ -93,8 +93,8 @@ app.put("/library/:artistId", async (req, res) => {
     await connectionPool.query(
       `UPDATE albums
        SET title = $1, 
-       url = $2,
-       album_cover = $3
+       album_cover = $2,
+       url = $3
        WHERE artist_id = $4`,
       [newAlbum.title, newAlbum.album_cover, newAlbum.url, artistId]
     );
